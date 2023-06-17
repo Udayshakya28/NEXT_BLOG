@@ -1,4 +1,4 @@
-# NextPromtAI
+# NextBlog
 
 NextPromtAI is a Next.js-based website that offers enhanced problem-solving capabilities through AI. It provides curated prompts and serves as a collaborative notebook for individuals seeking innovative solutions in the field of AI.
 
