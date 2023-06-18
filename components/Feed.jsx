@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 
 import PromptCard from "./PromptCard";
 import Link from "next/link";
+import Loader from "./loader";
 
 
 const PromptCardList = ({ data, handleTagClick }) => {
@@ -12,12 +13,14 @@ const PromptCardList = ({ data, handleTagClick }) => {
   return (
     <div className='mt-16 prompt_layout'>
       {data.map((post) => (
-        <Link href={`/blog/${post._id}`}>
-          <PromptCard
-            key={post._id}
-            data={post}
-            handleTagClick={handleTagClick}
-          /></Link>
+        // <Link href={`/blog/${post._id}`}>
+        <PromptCard
+          key={post._id}
+          ID={post._id}
+          data={post}
+          tag={post.tags}
+          handleTagClick={handleTagClick}
+        />
       ))}
     </div>
   );
@@ -28,30 +31,35 @@ const PromptCardList = ({ data, handleTagClick }) => {
 
 const Feed = (props) => {
   const [allPosts, setAllPosts] = useState([]);
+  const [allTags, setAllTags] = useState([]);
+
 
   // Search states
   const [searchText, setSearchText] = useState("");
   const [searchTimeout, setSearchTimeout] = useState(null);
   const [searchedResults, setSearchedResults] = useState([]);
-
+  const [isLoading, setisLoading] = useState(true);
   const fetchPosts = async () => {
-    const response = await fetch(`/api/${props.data}`);
+    setisLoading(true);
+    const response = await fetch(`/api/blog`);
     const data = await response.json();
     console.log(data);
+    const uniqueTags = [...new Set(data.flatMap(item => item.tags))];
+    setAllTags(uniqueTags)
     setAllPosts(data);
+    setisLoading(false);
   };
 
   useEffect(() => {
     fetchPosts();
   }, []);
 
-  const filterPrompts = (searchtext) => {
-    const regex = new RegExp(searchtext, "i"); // 'i' flag for case-insensitive search
+  const filterPrompts = (searchText) => {
+    const regex = new RegExp(searchText, "i");
     return allPosts.filter(
       (item) =>
-        regex.test(item.creator.username) ||
-        regex.test(item.tag) ||
-        regex.test(JSON.parse(item.data))
+        regex.test(JSON.parse(item.data)[0].value) ||
+        regex.test(item.tags.join(" "))
     );
   };
 
@@ -87,6 +95,20 @@ const Feed = (props) => {
           className='search_input peer'
         />
       </form>
+
+      <div>
+        {isLoading ? <Loader /> :
+          allTags?.map((tag, id) => {
+            return (
+              <button
+                className="bg-transparent hover:bg-black text-grey-700 text-sm  hover:text-white py-2 px-4 border border-grey-500 hover:border-transparent rounded-full m-1"
+                key={id}
+              >
+                {tag}
+              </button>
+            );
+          })}
+      </div>
 
       {/* All Prompts */}
       {searchText ? (

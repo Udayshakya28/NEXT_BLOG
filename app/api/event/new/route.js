@@ -1,4 +1,4 @@
-import Blog from "@models/blog";
+import Event from "@models/event";
 import { connectToDB } from "@utils/database";
 
 export const POST = async (request) => {
@@ -6,12 +6,12 @@ export const POST = async (request) => {
 
     try {
         await connectToDB();
-        const newBlog = new Blog({ creator: userId, data});
+        const newEvent = new Event({ creator: userId, data});
 
-        await newBlog.save();
-        return new Response(JSON.stringify(newBlog), { status: 201 })
+        await newEvent.save();
+        return new Response(JSON.stringify(newEvent), { status: 201 })
     } catch (error) {
         console.log(error);
-        return new Response("Failed to create a new Blog", { status: 500 });
+        return new Response("Failed to create a new Event", { status: 500 });
     }
 }

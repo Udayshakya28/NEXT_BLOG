@@ -16,6 +16,9 @@ const BlogCreatorPage = () => {
     { type: 'Description', value: '' }, // Description input field
   ]);
   const [submitting, setIsSubmitting] = useState(false);
+  const [tags, setTags] = useState([]);
+
+
 
   const handleInputChange = (index, name, value) => {
     // console.log({ index, name, value });
@@ -25,6 +28,10 @@ const BlogCreatorPage = () => {
       return updatedData;
     });
     // console.log(blogData);
+  };
+
+  const handleTagInputChange = (e) => {
+    setTags(e.target.value);
   };
 
 
@@ -38,11 +45,14 @@ const BlogCreatorPage = () => {
     setIsSubmitting(true);
 
     try {
+      const tagArray = tags.split(",");
+      
       const response = await fetch("/api/blog/new", {
         method: "POST",
         body: JSON.stringify({
           data: JSON.stringify(blogData),
           userId: session?.user.id,
+          tags: tagArray
         }),
       });
 
@@ -104,6 +114,14 @@ const BlogCreatorPage = () => {
 
           </div>
         ))}
+        <input
+          type="text"
+          value={tags}
+          onChange={handleTagInputChange}
+          placeholder="Enter a tag"
+          className="block mx-4 p-2.5 w-3/4 text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        />
+
         <div className="flex-end mx-3 mb-5 gap-4">
           {/* <select
             id="small"

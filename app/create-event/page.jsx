@@ -43,7 +43,7 @@ const CreateEvent = () => {
         setIsSubmitting(true);
 
         try {
-            const response = await fetch("/api/blog/new", {
+            const response = await fetch("/api/event/new", {
                 method: "POST",
                 body: JSON.stringify({
                     data: JSON.stringify(blogData),
@@ -75,7 +75,7 @@ const CreateEvent = () => {
             </p>
 
             <div class=" sm:max-w-2xl  w-full glassmorphism ">
-                <div class="relative px-4   md:mx-0 mb-3 rounded-3xl sm:p-10">
+                <div class="relative px-4  md:mx-0 mb-3 rounded-3xl sm:p-10">
                     <div class="max-w-md mx-auto">
 
                         <div class="divide-y divide-gray-200">
@@ -92,7 +92,7 @@ const CreateEvent = () => {
                                     <div class="flex flex-col w-full md:w-1/2 ">
                                         <label class="leading-loose">Start</label>
                                         <div class="relative focus-within:text-gray-600 text-gray-400">
-                                            <input onChange={handleInputChange} type="time" name="start-time" class="pr-4 pl-10 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600" placeholder="25/02/2020" />
+                                            <input onChange={handleInputChange} type="time" name="startTime" class="pr-4 pl-10 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600" placeholder="25/02/2020" />
                                             <div class="absolute left-3 top-2">
                                                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                                             </div>
@@ -101,7 +101,7 @@ const CreateEvent = () => {
                                     <div class="flex flex-col w-full md:w-1/2">
                                         <label class="leading-loose">End</label>
                                         <div class="relative focus-within:text-gray-600 text-gray-400">
-                                            <input onChange={handleInputChange} name="end-time" type="time" class="pr-4 pl-10 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600" placeholder="26/02/2020" />
+                                            <input onChange={handleInputChange} name="endTime" type="time" class="pr-4 pl-10 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600" placeholder="26/02/2020" />
                                             <div class="absolute left-3 top-2">
                                                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                                             </div>
