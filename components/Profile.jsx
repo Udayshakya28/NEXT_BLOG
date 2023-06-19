@@ -12,6 +12,8 @@ const Profile = ({ name, desc, data, handleEdit, handleDelete }) => {
         {data.map((post) => (
           <PromptCard
             key={post._id}
+            ID={post._id}
+            data={post}
             post={post}
             handleEdit={() => handleEdit && handleEdit(post)}
             handleDelete={() => handleDelete && handleDelete(post)}
@@ -23,3 +25,4 @@ const Profile = ({ name, desc, data, handleEdit, handleDelete }) => {
 };
 
 export default Profile;
+

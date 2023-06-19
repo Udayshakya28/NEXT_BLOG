@@ -5,8 +5,8 @@ import Provider from "@components/Provider";
 import Footer from "@components/Footer";
 
 export const metadata = {
-  title: "NextPromptAI",
-  description: "Discover & Share AI Prompts",
+  title: "NextBlog",
+  description: "Discover & Share Blog",
 };
 
 const RootLayout = ({ children }) => (

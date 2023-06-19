@@ -8,14 +8,14 @@ import Link from "next/link";
 
 const PromptCard = ({ data, post, ID, tag, handleEdit, handleDelete, handleTagClick }) => {
   const { data: session } = useSession();
-  const PostData = JSON.parse(data.data);
+  const PostData = JSON.parse(data?.data)
   const pathName = usePathname();
   const router = useRouter();
-  console.log(data.creator);
+  // console.log(data.creator);
   const [copied, setCopied] = useState("");
 
   const handleProfileClick = () => {
-    console.log(post);
+
 
     if (post.creator._id === session?.user.id) return router.push("/profile");
 

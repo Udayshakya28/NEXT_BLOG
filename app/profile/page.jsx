@@ -3,6 +3,8 @@
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
+
 
 import Profile from "@components/Profile";
 
@@ -14,9 +16,10 @@ const MyProfile = () => {
 
   useEffect(() => {
     const fetchPosts = async () => {
-      const response = await fetch(`/api/users/${session?.user.id}/posts`);
+      // console.log(session.user.id);
+      const response = await fetch(`/api/users/${session?.user.id}/Blogs`);
       const data = await response.json();
-
+      // console.log(data);
       setMyPosts(data);
     };
 
@@ -24,7 +27,7 @@ const MyProfile = () => {
   }, [session?.user.id]);
 
   const handleEdit = (post) => {
-    router.push(`/update-prompt?id=${post._id}`);
+    router.push(`/updateBlog?id=${post._id}`);
   };
 
   const handleDelete = async (post) => {
@@ -34,7 +37,7 @@ const MyProfile = () => {
 
     if (hasConfirmed) {
       try {
-        await fetch(`/api/prompt/${post._id.toString()}`, {
+        await fetch(`/api/blog/${post._id.toString()}`, {
           method: "DELETE",
         });
 

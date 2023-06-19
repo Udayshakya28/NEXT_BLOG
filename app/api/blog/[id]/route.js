@@ -17,7 +17,7 @@ export const GET = async (request, { params }) => {
 }
 
 export const PATCH = async (request, { params }) => {
-    const { Blog, tag } = await request.json();
+    const { Blog, tags } = await request.json();
 
     try {
         await connectToDB();
@@ -30,13 +30,14 @@ export const PATCH = async (request, { params }) => {
         }
 
         // Update the Blog with new data
-        existingPrompt.Blog = Blog;
-        existingPrompt.tag = tag;
+        existingPrompt.data = Blog;
+        existingPrompt.tags = tags;
 
         await existingPrompt.save();
 
         return new Response("Successfully updated the Prompts", { status: 200 });
     } catch (error) {
+        console.log(error);
         return new Response("Error Updating Blog", { status: 500 });
     }
 };
