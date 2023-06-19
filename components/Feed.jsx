@@ -78,7 +78,6 @@ const Feed = (props) => {
 
   const handleTagClick = (tagName) => {
     setSearchText(tagName);
-
     const searchResult = filterPrompts(tagName);
     setSearchedResults(searchResult);
   };
@@ -103,6 +102,7 @@ const Feed = (props) => {
               <button
                 className="bg-transparent hover:bg-black text-grey-700 text-sm  hover:text-white py-2 px-4 border border-grey-500 hover:border-transparent rounded-full m-1"
                 key={id}
+                onClick={() => { handleTagClick(tag) }}
               >
                 {tag}
               </button>

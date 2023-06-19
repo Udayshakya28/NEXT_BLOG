@@ -13,14 +13,20 @@ const MyProfile = () => {
   const { data: session } = useSession();
 
   const [myPosts, setMyPosts] = useState([]);
+  const [isLoading, setisLoading] = useState(true);
+
 
   useEffect(() => {
     const fetchPosts = async () => {
       // console.log(session.user.id);
+      setisLoading(true);
+
       const response = await fetch(`/api/users/${session?.user.id}/Blogs`);
       const data = await response.json();
       // console.log(data);
       setMyPosts(data);
+      setisLoading(false);
+
     };
 
     if (session?.user.id) fetchPosts();
@@ -32,7 +38,7 @@ const MyProfile = () => {
 
   const handleDelete = async (post) => {
     const hasConfirmed = confirm(
-      "Are you sure you want to delete this prompt?"
+      "Are you sure you want to delete this Blog?"
     );
 
     if (hasConfirmed) {
@@ -57,6 +63,7 @@ const MyProfile = () => {
       data={myPosts}
       handleEdit={handleEdit}
       handleDelete={handleDelete}
+      // isLoading={isLoading}
     />
   );
 };

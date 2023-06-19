@@ -18,6 +18,7 @@ const RootLayout = ({ children }) => (
 
     <body>
       <Provider>
+
         <div className='main'>
           <div className='gradient' />
         </div>
@@ -27,6 +28,7 @@ const RootLayout = ({ children }) => (
           {children}
           <Footer />
         </main>
+
       </Provider>
     </body>
   </html>

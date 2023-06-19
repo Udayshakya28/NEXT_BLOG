@@ -17,20 +17,21 @@ export const GET = async (request, { params }) => {
 }
 
 export const PATCH = async (request, { params }) => {
-    const { Blog, tags } = await request.json();
+    const { updatedBlog, tags } = await request.json();
 
     try {
         await connectToDB();
 
         // Find the existing Blog by ID
-        const existingPrompt = await Blog.findById(params.id);
+        console.log(params.id);
+        const existingPrompt = await Blog.findById(params.id).populate("creator")
 
         if (!existingPrompt) {
             return new Response("Blog not found", { status: 404 });
         }
 
         // Update the Blog with new data
-        existingPrompt.data = Blog;
+        existingPrompt.data = updatedBlog;
         existingPrompt.tags = tags;
 
         await existingPrompt.save();

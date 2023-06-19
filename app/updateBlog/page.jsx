@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
+import Loader from "@components/loader";
 
 const UpdatePrompt = () => {
   const router = useRouter();
@@ -13,14 +14,19 @@ const UpdatePrompt = () => {
   const [submitting, setIsSubmitting] = useState(false);
   const [tags, setTags] = useState([]);
   const [blogData, setBlogData] = useState([]);
+  const [isLoading, setisLoading] = useState(true);
 
   useEffect(() => {
     const getPromptDetails = async () => {
+      setisLoading(true);
+
       const response = await fetch(`/api/blog/${promptId}`);
       const data = await response.json();
       console.log(data);
       setBlogData(JSON.parse(data.data))
       setTags(data.tags.join(","));
+      setisLoading(false);
+
     };
 
     if (promptId) getPromptDetails();
@@ -58,7 +64,7 @@ const UpdatePrompt = () => {
       const response = await fetch(`/api/blog/${promptId}`, {
         method: "PATCH",
         body: JSON.stringify({
-          Blog: JSON.stringify(blogData),
+          updatedBlog: JSON.stringify(blogData),
           tags: tagArray
         }),
       });
@@ -86,70 +92,80 @@ const UpdatePrompt = () => {
         Create and share amazing prompts with the world, and let your
         imagination run wild with any AI-powered platform
       </p>
-
-      <form
-        onSubmit={updatePrompt}
-        className="mt-10 sm:w-full  flex flex-col gap-7 glassmorphism"
-      >
-        {blogData.map((input, index) => (
-          <div className="flex w-full items-center px-3 py-2 rounded-lg bg-gray-50 " key={index}>
-            <select
-              id="small"
-              className="block w-1/4 p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              name="type"
-              value={input.type}
-              onChange={(e) => handleInputChange(index, "type", e.target.value)}
-            >
-              <option value="">Choose a type</option>
-              <option value="Title">Title</option>
-              <option value="SecondaryTitle">SecondaryTitle</option>
-              <option value="Description">Description</option>
-              <option value="Image">Image</option>
-              <option value="Wallpaper">Wallpaper</option>
-            </select>
-
-            <textarea
-              id="chat"
-              type="text"
-              name="inputValue"
-              value={input.value}
-              onChange={(e) => handleInputChange(index, "value", e.target.value)}
-              rows="1"
-              className="block mx-4 p-2.5 w-3/4 text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="Your message..."
-            ></textarea>
-
+      {
+        isLoading ?
+          <div className="w-full flex flex-col flex-center"> <Loader />
           </div>
-        ))}
-        <input
-          type="text"
-          value={tags}
-          onChange={handleTagInputChange}
-          placeholder="Enter a tag"
-          className="block mx-4 p-2.5 w-3/4 text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-        />
+          :
 
-        <div className="flex-end mx-3 mb-5 gap-4">
+          <form
+            onSubmit={updatePrompt}
+            className="mt-10 sm:w-full  flex flex-col gap-7 glassmorphism"
+          >
+            {
 
-          <Link href="/" className="text-gray-500 text-sm">
-            Cancel
-          </Link>
-          <button
-            type="button"
-            onClick={handleAddInput}
-            className="px-5 py-1.5 text-sm bg-primary-orange rounded-full text-white"
-          >
-            Add input
-          </button>
-          <button
-            type="submit"
-            disabled={submitting}
-            className="px-5 py-1.5 text-sm text-semibold bg-primary-orange rounded-full text-white"
-          >
-            {submitting ? `Updating...` : "Update"}
-          </button>
-        </div>
-      </form>
+              blogData.map((input, index) => (
+                <div className="flex w-full items-center px-3 py-2 rounded-lg bg-gray-50 " key={index}>
+                  <select
+                    id="small"
+                    className="block w-1/4 p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    name="type"
+                    value={input.type}
+                    onChange={(e) => handleInputChange(index, "type", e.target.value)}
+                  >
+                    <option value="">Choose a type</option>
+                    <option value="Title">Title</option>
+                    <option value="SecondaryTitle">SecondaryTitle</option>
+                    <option value="Description">Description</option>
+                    <option value="Image">Image</option>
+                    <option value="Wallpaper">Wallpaper</option>
+                  </select>
+
+                  <textarea
+                    id="chat"
+                    type="text"
+                    name="inputValue"
+                    value={input.value}
+                    onChange={(e) => handleInputChange(index, "value", e.target.value)}
+                    rows="1"
+                    className="block mx-4 p-2.5 w-3/4 text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Your message..."
+                  ></textarea>
+
+                </div>
+              ))}
+            <input
+              type="text"
+              value={tags}
+              onChange={handleTagInputChange}
+              placeholder="Enter a tag"
+              className="block mx-4 p-2.5 w-3/4 text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            />
+
+            <div className="flex-end mx-3 mb-5 gap-4">
+
+              <Link href="/" className="text-gray-500 text-sm">
+                Cancel
+              </Link>
+              <button
+                type="button"
+                onClick={handleAddInput}
+                className="px-5 py-1.5 text-sm bg-primary-orange rounded-full text-white"
+              >
+                Add input
+              </button>
+              <button
+                type="submit"
+                disabled={submitting}
+                className="px-5 py-1.5 text-sm text-semibold bg-primary-orange rounded-full text-white"
+              >
+                {submitting ? `Updating...` : "Update"}
+              </button>
+            </div>
+          </form>
+
+      }
+
     </div>
   );
 };
